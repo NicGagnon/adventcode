@@ -76,10 +76,8 @@ def print_grid(g):
     print()
 
 
-def thruster_calculation(x, y):
+def thruster_calculation(x, input_instructions):
   mem, index = 0, 0
-  game_index, grid = 0, {}
-  dx, dy, dz = 0, 0, 1
   scaffold = []
   while x[index] != 99:
     command = x[index]
@@ -103,11 +101,11 @@ def thruster_calculation(x, y):
       opcode = fill_command(command, 3)[0]
       if instruction == 3:
         # user_ID = input("Please input user ID of the system you wish to test: ")
-
+        ascii_code = input_instructions.popleft()
         if opcode == '0':
-          x[x[index + 1]] = 1
+          x[x[index + 1]] = ascii_code
         else:
-          x[mem + x[index + 1]] = 1
+          x[mem + x[index + 1]] = ascii_code
       else:  # instruction 4
         scaffold.append(param_value(x, index, opcode, 1, mem))
 
@@ -160,18 +158,32 @@ def has_neighbors(i, j, s):
 
 
 if __name__ == '__main__':
-  A = open('17.in').read().split(',')
-  B = {}
-  for i, x in enumerate(A):
-    B[i] = int(x)
-  sca = thruster_calculation(B, 1)
+  _input = open('17.in').read().split(',')
+  input_instructions = deque()
+  funcs = [
+    'L,10,L,12,R,6',
+    'R,10,L,4,L,4,L,12',
+    'L,10,R,10,R,6,L,4'
+  ]
+  subs = '\n'.join(funcs)
+  debug = 'n'
+  routine = 'A,B,A,B,A,C,B,C,A,C'
+  robot_prog = list(map(ord, '{}\n{}\n{}\n'.format(routine, subs, debug)))
+  for inst in robot_prog:
+    input_instructions.append(inst)
+  instruction_dict = {}
+  for i, x in enumerate(_input):
+    instruction_dict[i] = int(x)
+  scaffold = thruster_calculation(instruction_dict, input_instructions)
+  print(scaffold[-1])
+  """sca = thruster_calculation(instruction_dict)
   for index, code in enumerate(sca):
     if code == 46:
       print(".", end="")
     elif code == 35:
       print("#", end="")
     elif code == 94:
-      print("<", end="")
+      print("^", end="")
     else:
       print()
   intersection = 0
@@ -182,3 +194,4 @@ if __name__ == '__main__':
         if has_neighbors(x, y, sca):
           intersection += x * y
   print(intersection)
+"""
