@@ -34,25 +34,6 @@ def create_index(x, value):
     x[value] = 0
 
 
-def add_available_tiles(Q, R, dx, dy, dz, grid):
-  if (dx, dy + 1) not in grid:
-    Q.insert(0, (1, dx, dy+1, dz))
-  elif grid[(dx, dy + 1)] > -1:
-    R.insert(0, (1, dx, dy + 1, dz-1))
-  if (dx, dy - 1) not in grid:
-    Q.insert(0, (2, dx, dy-1, dz))
-  elif grid[(dx, dy - 1)] > -1:
-    R.insert(0, (2, dx, dy - 1, dz-1))
-  if (dx - 1, dy) not in grid:
-    Q.insert(0, (3, dx-1, dy, dz))
-  elif grid[(dx-1, dy)] > -1:
-    R.insert(0, (3, dx-1, dy, dz-1))
-  if (dx + 1, dy) not in grid:
-    Q.insert(0, (4, dx+1, dy, dz))
-  elif grid[(dx + 1, dy)] > -1:
-    R.insert(0, (4, dx + 1, dy, dz-1))
-
-
 def Q_tiles(Q, dx, dy, dz, grid):
   if (dx, dy + 1) not in grid:
     Q.insert(0, (1, dx, dy+1, dz))
